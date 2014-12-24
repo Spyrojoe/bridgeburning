@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="description" content="Bridge Burning are a Foo Fighters tribute band based in Dallas, TX." />
+	<title>Bridge Burning | a Foo Fighters tribute band | Dallas, TX</title>
+	<link href='http://fonts.googleapis.com/css?family=Patrick+Hand|Just+Another+Hand|Sue+Ellen+Francisco|Short+Stack|Schoolbell|Walter+Turncoat|Shadows+Into+Light+Two|Coming+Soon|Amatic+SC:400,700' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy|Lora:400,700|Della+Respira|Lusitana:400,700|Source Sans Pro:400' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Sue+Ellen+Francisco|Roboto:400,300' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link href='http://fonts.googleapis.com/css?family=Raleway:400,300,200,100,500,600,700|Merriweather:400,300,300italic,400italic,700' rel='stylesheet' type='text/css'>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="soundcloud-api.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="clfx">
+<div class="container">
+
+	<div class="col">
+		<div class="name">
+			<h1>Bridge Burning</h1>
+			<h2>a <span>Foo Fighters</span> tribute</h2>
+		</div>
+		<ul class="social">
+			<li><a href="http://www.facebook.com/dfw.bridgeburning"><img src="img/facebook-mod.svg" id="facebook"></a></li>
+			<li><a href="mailto:contact@bridgeburningdfw.com"><img src="img/email.svg" id="email"></a></li>
+		</ul>
+
+		<div class="player">
+			<div class="display clfx">
+				<div class="track-info">
+					<h2>All My Life</h2>
+					<p>From the album</p>
+					<p><strong>One By One</strong></p>
+				</div>
+				<ul class="playlist">
+					<li id="all-my-life"><a href="audio/All%20My%20Life.mp3">All My Life</a></li>
+					<li id="my-hero"><a href="audio/My%20Hero.mp3">My Hero</a></li>
+					<li id="times-like-these"><a href="audio/Times%20Like%20These.mp3">Times Like These</a></li>
+				</ul>
+			</div>
+			<div class="transport">	
+				<div class="button-group">
+					<div id="seek-back"></div>
+					<div id="play" class="play"></div>
+					<div id="seek-forward"></div>
+				</div>
+				<input id="seek" type="range" value="0">
+			</div>
+		</div>
+		<audio id="foo"></audio>
+
+	</div>
+
+	<div class="col">
+		<div class="copy">
+			<blockquote>
+				<p>I don't want to be perfect. I want to be badass.</p>
+				<p>-Dave Grohl</p>
+			</blockquote>
+			<p>That's pretty much how we feel about playing other people's music. A lot of tribute bands go to great lengths to look and sound exactly like the act that they're emulating, but us, we just want to jam some Foo Fighters tunes. Our hair might not be as fabulous as Dave's, and our drummer might not be as pretty as Taylor, but I promise you this; it will be badass.</p>
+		</div>
+	</div>
+
+</div><!-- container -->
+<script type="text/javascript">
+	$(document).ready(function(){
+		/*
+		var windowHeight = $(window).height(),
+			contentHeight = $('.container').innerHeight(),
+			bodyMarginTop = (windowHeight - contentHeight) / 2;
+		console.log(windowHeight);
+		$('.container').css('margin-top', bodyMarginTop);
+		*/
+		var music = document.getElementsByTagName('audio')[0],
+			trackName = $('.transport h2'),
+			playing = false,
+			track01 = $('.playlist li a:first-of-type').attr('href'),
+			track02 = $('.playlist li a:nth-of-type(2)').attr('href'),
+			track03 = $('.playlist li a:last-of-type').attr('href');
+		$('.playlist li:first-of-type').addClass('active-track');
+		$('#foo').attr('src', track01);
+		$("#seek").bind("change", function() {
+        	music.currentTime = $(this).val();
+        	$("#seek").attr("max", music.duration);
+    	});
+		$('player li a').click(function(){
+			event.preventDefault();
+			$(this).parent().addClass('active-track').siblings().removeClass('active-track');
+			var newTrack = $(this).attr('href'),
+				newTitle = $(this).parent().text();
+			changeTrack(newTrack);
+			changeTitle(newTitle);
+			$('#seek').val(0);
+			$('#play').addClass('active-button');
+		});
+		$('#play').click(function(){
+			if (music.paused) {
+				music.play();
+				$(this).addClass('active-button');
+			} else {
+				music.pause();
+				$(this).removeClass('active-button');
+			}
+		});
+		$('#seek-forward').click(function(){
+			if ($('.active-track').is(':last-child') == false){
+				$('.active-track').removeClass('active-track').next().addClass('active-track');
+			} else {
+				$('.active-track').removeClass('active-track');
+				$('.playlist li:first-of-type').addClass('active-track');
+			}
+			changeTrack($('.active-track a').attr('href'));
+			$('#play').addClass('active-button');
+			$('#seek').val(0);
+		});
+		$('#seek-back').click(function(){
+			if ($('.active-track').is(':first-child') == false){
+				$('.active-track').removeClass('active-track').prev().addClass('active-track');
+			} else {
+				$('.active-track').removeClass('active-track');
+				$('.playlist li:last-of-type').addClass('active-track');
+			}
+			changeTrack($('.active-track a').attr('href'));
+			$('#play').addClass('active-button');
+			$('#seek').val(0);
+		});
+		function changeTrack(x){
+			$('#foo').attr('src', x);
+			music.play();
+			updateDisplay();
+		}
+		function changeTitle(y){
+			$('.transport h2').text(y);
+		}
+		function updateDisplay(){
+			var songTitle;
+			$('.playlist li').each(function(){
+				if ($(this).hasClass('active-track')){
+					songTitle = $(this).attr('id');
+					$('.track-info h2').text(songTitle.replace(/-/g, " "));
+					if (songTitle == "all-my-life") {
+						$('.track-info p:last-of-type').text("One By One");
+					} else if (songTitle == "my-hero") {
+						$('.track-info p:last-of-type').text("The Colour and the Shape");
+					} else {
+						$('.track-info p:last-of-type').text("One By One");
+					}
+				}
+			});
+		}
+	});
+</script>
+</body>
+</html>
