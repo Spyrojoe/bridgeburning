@@ -13,17 +13,22 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body class="clfx">
-<div class="container">
+<div class="container clfx">
+
+	<ul class="social">
+		<li>
+			<a href="http://www.facebook.com/dfw.bridgeburning">facebook</a>
+		</li>
+		<li>
+			<a href="mailto:contact@bridgeburningdfw.com">email</a>
+		</li>
+	</ul>
 
 	<div class="col">
 		<div class="name">
 			<h1>Bridge Burning</h1>
 			<h2>a <span>Foo Fighters</span> tribute</h2>
 		</div>
-		<ul class="social">
-			<li><a href="http://www.facebook.com/dfw.bridgeburning"><img src="img/facebook-mod.svg" id="facebook"></a></li>
-			<li><a href="mailto:contact@bridgeburningdfw.com"><img src="img/email.svg" id="email"></a></li>
-		</ul>
 
 		<div class="player">
 			<div class="display clfx">
@@ -64,13 +69,10 @@
 </div><!-- container -->
 <script type="text/javascript">
 	$(document).ready(function(){
-		/*
-		var windowHeight = $(window).height(),
-			contentHeight = $('.container').innerHeight(),
-			bodyMarginTop = (windowHeight - contentHeight) / 2;
-		console.log(windowHeight);
-		$('.container').css('margin-top', bodyMarginTop);
-		*/
+		var logoWidth = $(".col:first-of-type").width();
+		console.log(logoWidth);
+		//$(".player").css("margin", "0").width(logoWidth);
+
 		var music = document.getElementsByTagName('audio')[0],
 			trackName = $('.transport h2'),
 			playing = false,
