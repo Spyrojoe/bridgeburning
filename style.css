@@ -14,11 +14,21 @@ div, p, blockquote{
 body{
 	margin: 10% 0 0 0;
 	/*background-image: url('img/math.png');*/
-	background-color: rgba(226,226,226, .08);
 	background-image: url('img/dave.svg');
+	background-color: rgba(226,226,226, .08);
 	background-repeat: no-repeat;
 	background-size: 64%;
 	background-position: -70% 0;
+}
+#full-bg{
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	background-image: url("img/math.png");
+	/*background-size: cover;*/
+	opacity: .3;
 }
 .container{
 	width: 90%;

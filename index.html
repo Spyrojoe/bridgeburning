@@ -12,7 +12,7 @@
 	<script src="soundcloud-api.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body class="clfx">
+<body>
 <div class="container clfx">
 
 	<header>
@@ -69,8 +69,14 @@
 	</div>
 
 </div><!-- container -->
+<div id="full-bg"></div>
 <script type="text/javascript">
 	$(document).ready(function(){
+		var windowHeight = $(window).height();
+		console.log(windowHeight);
+
+		$("#full-bg").height(windowHeight);
+
 		var music = document.getElementsByTagName('audio')[0],
 			trackName = $('.transport h2'),
 			playing = false,
